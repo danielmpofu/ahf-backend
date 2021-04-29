@@ -18,16 +18,13 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('entity_id');
             $table->text('message');
-            $table->timestamps();
+            $table->text('entity_type');
             $table->softDeletes();
+            $table->timestamps();
+
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('comments');

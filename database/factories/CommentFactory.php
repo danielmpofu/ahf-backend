@@ -15,7 +15,8 @@ class CommentFactory extends Factory
         return [
             'message'=>$this->faker->sentences(2,true),
             'user_id'=>User::all()->random()->id,
-            'entity_id'=>$this->faker->numberBetween(1,120)
+            'entity_id'=>$this->faker->numberBetween(1,120),
+            'entity_type'=>$this->faker->randomElement(['video','course','document','mcq']),
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\Faq;
 use App\Models\Level;
 use App\Models\User;
@@ -38,6 +39,18 @@ class CourseController extends Controller
             $c = json_decode(json_encode($course), true);
             $c['tutor'] = $t->first_name . ' ' . $t->last_name;
             $c['enrollments'] = $e;
+
+            $en = Enrollment::query()
+                ->where('course_id', $course->id)
+                ->where('user_id', $this->user->id)
+                ->get();
+
+            if (count($en) != 0) {
+                $c['enrolled'] = true;
+            } else {
+                $c['enrolled'] = false;
+            }
+
             array_push($outputData, $c);
         }
         return $this->successResponse($outputData);
@@ -47,9 +60,9 @@ class CourseController extends Controller
     public function add_faq(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'course_id'=>'required',
-            'question'=>'required',
-            'answer'=>'required'
+            'course_id' => 'required',
+            'question' => 'required',
+            'answer' => 'required'
         ]);
 
         if (!$validator->fails()) {
@@ -57,7 +70,7 @@ class CourseController extends Controller
             $faq->course_id = $request->all()['course_id'];
             $faq->question = $request->all()['question'];
             $faq->answer = $request->all()['answer'];
-            $faq->created_by =$this->user->id;
+            $faq->created_by = $this->user->id;
 
             $faq->save();
             return $this->entityCreated($faq);
@@ -67,9 +80,10 @@ class CourseController extends Controller
         }
     }
 
-    public function get_faq($cid){
-       // $course = Course::query()->get($cid);
-        $faqs = Faq::query()->where('course_id',$cid)->get();
+    public function get_faq($cid)
+    {
+        // $course = Course::query()->get($cid);
+        $faqs = Faq::query()->where('course_id', $cid)->get();
         return $this->successResponse($faqs);
     }
 
@@ -91,10 +105,27 @@ class CourseController extends Controller
         return $this->successResponse($courses);
     }
 
-    public function resources(Course $course)
+    public function enrollCourse($course)
     {
-        return $this->successResponse($course->courseResources()->get());
+        $course = Course::query()->findOrFail($course);
+        $en = Enrollment::query()
+            ->where('course_id', $course->id)
+            ->where('user_id', $this->user->id)
+            ->get();
+
+        if (count($en) != 0) {
+            $en[0]->delete();
+            return $this->successResponse(['message'=>'Un enrolled',$en]);
+        } else {
+            $enr = new Enrollment();
+            $enr->user_id = $this->user->id;
+            $enr->course_id = $course->id;
+            $enr->save();
+            return $this->successResponse($enr);
+        }
+
     }
+
 
     public function create(Request $request)
     {
@@ -102,21 +133,26 @@ class CourseController extends Controller
             'title' => 'string|required|between:3,100|unique:courses',
             'description' => 'required|string',
             'level' => 'required|string',
+            'duration' => 'required',
             'entry_requirements' => 'required|string',
             'optional' => 'required|string',
         ]);
 
         if (!$validator->fails()) {
 
-            $course = new Course();
+            $f = $request->all();
+            unset($f['path']);
+            $course = new Course($f);
             $course->title = $request->title;
             $course->description = $request->description;
             $course->entry_requirements = $request->entry_requirements;
             $course->optional = $request->optional;
             $course->instructor_id = $this->user->id;
+
             $level = Level::query()->findOrFail($request->level);
 
             $course->cover_image = $request->cover_image->store('public/images');
+
             $level->courses()->save($course);
 
             $this->user->courses()->save($course);
@@ -144,6 +180,18 @@ class CourseController extends Controller
 
         $c = json_decode(json_encode($course), true);
         unset($c['course_resources']);
+        $en = Enrollment::query()
+            ->where('course_id', $course->id)
+            ->where('user_id', $this->user->id)
+            ->get();
+
+        if (count($en) != 0) {
+            $c['enrolled'] = true;
+        } else {
+            $c['enrolled'] = false;
+        }
+
+//        $c['enrolled'] = $en;
 
         $courseData = array(
             "course" => $c,
@@ -154,21 +202,6 @@ class CourseController extends Controller
         return $this->successResponse($courseData);
     }
 
-    public function comment(Request $request, $course)
-    {
-        $courseF = Course::query()->findOrFail($course);
-        $validator = Validator::make($request->all(), ['message' => 'string|required']);
-        if ($validator->fails()) {
-            return $this->badRequest($validator->errors());
-        } else {
-            $c = new Comment();
-            $c->message = $request->message;
-            $c->user_id = $this->user->id;
-            $c->entity_id = $course;
-            $c->save();
-            return $this->entityCreated($c);
-        }
-    }
 
     public function comments($course)
     {

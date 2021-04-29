@@ -11,7 +11,7 @@ class Comment extends Model
 
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['message', 'user_id', 'entity_id'];
+    protected $fillable = ['message', 'user_id', 'entity_id','entity_type'];
 
     protected $casts = ['entity_id'=>'integer'];
 

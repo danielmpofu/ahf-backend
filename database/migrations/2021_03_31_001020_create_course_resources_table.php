@@ -13,6 +13,9 @@ class CreateCourseResourcesTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('created_by');
+
+            $table->unsignedBigInteger('points');
+
             $table->string('title');
 
             $table->text('description');

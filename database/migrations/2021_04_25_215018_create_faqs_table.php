@@ -18,17 +18,25 @@ class CreateFaqsTable extends Migration
             $table->unsignedBigInteger('course_id')->nullable(false);
             $table->text('question');
             $table->text('answer');
+
             $table->unsignedBigInteger('created_by')->default('0');
+
             $table->softDeletes();
+
             $table->timestamps();
+
+            $table->foreign('course_id')
+                ->references('id')
+                ->on('courses')
+                ->onDelete('cascade');
+
+            $table->foreign('created_by')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('faqs');

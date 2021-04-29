@@ -13,15 +13,14 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-
     public function run()
     {
-        User::factory(10)->create();
-        Level::factory(10)->create();
-        Course::factory(120)->create();
-        Enrollment::factory(400)->create();
+        User::factory(8)->create();
+        Level::factory(4)->create();
+        Course::factory(40)->create();
+        Enrollment::factory(100)->create();
         CourseResource::factory(300)->create();
-        Comment::factory(300)->create();
-        Faq::factory(400)->create();
+        Comment::factory(600)->create();
+        Faq::factory(100)->create();
     }
 }

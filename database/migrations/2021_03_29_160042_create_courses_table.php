@@ -22,7 +22,7 @@ class CreateCoursesTable extends Migration
             $table->text('lectures')->default('1');
             $table->text('quizzes')->default('1');
             $table->text('pass')->default('50');
-//            $table->text('pass')->default('50');
+
 
             $table->text('cover_image');
             $table->integer('level')->unsigned()->index();

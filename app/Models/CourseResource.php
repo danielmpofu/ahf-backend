@@ -13,7 +13,11 @@ class CourseResource extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['title', 'description', 'created_by', 'path', 'file_type', 'file_extension', 'file_size', 'course_id'];
+    protected $fillable = ['title', 'description','contribution','points', 'created_by', 'path', 'file_type', 'file_extension', 'file_size', 'course_id'];
+
+    public function resourceViews(){
+        return $this->hasMany(ResourceViews::class,'resource_id','id');
+    }
 
     public function course()
     {
@@ -29,4 +33,11 @@ class CourseResource extends Model
     {
         return $this->hasMany(Comment::class, 'entity_id', 'id');
     }
+
+    public function courseProgress()
+    {
+        return $this->hasMany(CourseProgress::class, 'resource_id', 'id');
+    }
+
+
 }

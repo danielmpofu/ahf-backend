@@ -16,6 +16,11 @@ class CreateLevelsTable extends Migration
             $table->text('description');
             $table->softDeletes();
             $table->timestamps();
+
+//            $table->foreign('course_id')
+//                ->references('id')
+//                ->on('courses')
+//                ->onDelete('cascade');
         });
     }
 
