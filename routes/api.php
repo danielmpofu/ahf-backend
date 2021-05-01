@@ -10,12 +10,19 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\LevelController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::group(['middleware' => 'api', 'prefix' => 'exercises'],
     function () {
+
+
+        Route::get('delete/{exercise}', [ExerciseController::class, 'destroy']);
+
+        Route::get('available', [ExerciseController::class, 'myExercises']);
+
+        Route::post('/add-question', [ExerciseController::class, 'addQuestion']);
+        Route::post('/get-questions', [ExerciseController::class, 'getQuestion']);
+
         Route::get('/', [ExerciseController::class, 'index']);
         Route::post('/', [ExerciseController::class, 'store']);
-        Route::get('delete/{exercise}', [ExerciseController::class, 'destroy']);
         Route::get('/{course}', [ExerciseController::class, 'findByCourse']);
     });
 
