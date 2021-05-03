@@ -13,17 +13,21 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'api', 'prefix' => 'exercises'],
     function () {
 
-
-        Route::get('delete/{exercise}', [ExerciseController::class, 'destroy']);
-
         Route::get('available', [ExerciseController::class, 'myExercises']);
+        Route::post('add-question', [ExerciseController::class, 'addQuestion']);
+        Route::post('get-questions', [ExerciseController::class, 'getQuestion']);
+        Route::post('attempt', [ExerciseController::class, 'attempt_exercise']);
+        Route::post('save-answer', [ExerciseController::class, 'addAnswer']);
 
-        Route::post('/add-question', [ExerciseController::class, 'addQuestion']);
-        Route::post('/get-questions', [ExerciseController::class, 'getQuestion']);
+        Route::post('get-answer-sheets', [ExerciseController::class, 'getAnswerSheets']);
+
+        Route::get('get-one/{exercise}', [ExerciseController::class, 'show']);
+        Route::get('delete/{exercise}', [ExerciseController::class, 'destroy']);
+        Route::get('find-by-course/{course}', [ExerciseController::class, 'findByCourse']);
+
 
         Route::get('/', [ExerciseController::class, 'index']);
         Route::post('/', [ExerciseController::class, 'store']);
-        Route::get('/{course}', [ExerciseController::class, 'findByCourse']);
     });
 
 Route::group(['middleware' => 'api', 'namespace' => 'Api\Http\Controllers', 'prefix' => 'auth'],

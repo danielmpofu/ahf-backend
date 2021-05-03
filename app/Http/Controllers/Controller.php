@@ -12,20 +12,31 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-
-
-    public function successResponse($data){
-        return response()->json($data,200);
+    public function successResponse($data)
+    {
+        return response()->json($data, 200);
     }
 
-    public function entityCreated($data){
-        return response()->json($data,201);
+    public function entityCreated($data)
+    {
+        return response()->json($data, 201);
     }
 
-    public function badRequest($data){
-        return response()->json($data,400);
+    public function badRequest($data)
+    {
+        return response()->json($data, 400);
     }
-    public function otherResponse($data,$code=200){
-        return response()->json($data,$code);
+
+    public function notFound()
+    {
+        return response()->json([
+            'status' => 'not found',
+            'success' => false,
+            'message' => 'the resource you are looking for cannot be found'], 400);
+    }
+
+    public function otherResponse($data, $code = 200)
+    {
+        return response()->json($data, $code);
     }
 }
