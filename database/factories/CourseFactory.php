@@ -22,6 +22,7 @@ class CourseFactory extends Factory
             'cover_image' => 'images/img_' . $this->faker->numberBetween(1, 25) . '.jpg',
             'duration' => $this->faker->numberBetween(1, 25) . ' ' . $this->faker->randomElement(['Days', 'Months', 'Weeks', 'Hours']),
             'level' => Level::all()->random()->id,
+
             'instructor_id' => User::all()->random()->id,
         ];
     }

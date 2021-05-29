@@ -69,6 +69,7 @@ class CourseResourceController extends Controller
                 'description' => 'string|required',
                 //'created_by' => 'required',
                 'course_id' => 'required',
+                'resource_type' => 'required',
                 'points' => 'required'
             ]);
 
@@ -80,14 +81,21 @@ class CourseResourceController extends Controller
             $courseResourceData = $request->all();
 
             $path = 'n/a';
-            if (isset($request->path)) {
-                $path = $request->path->store('public\course_resources');
-                unset($request->all()['path']);
-                $courseResourceData['file_extension'] = $request->path->extension();
-                $courseResourceData['file_type'] = '.' . $request->path->extension();
-                $courseResourceData['file_size'] = $request->path->getSize();
 
+            if ($request->resource_type == 'video' || $request->resource_type == 'file') {
+                if (isset($request->path)) {
+                    $path = $request->path->store('public\course_resources');
+                    unset($request->all()['path']);
+                    $courseResourceData['file_extension'] = $request->path->extension();
+                    $courseResourceData['file_type'] = '.' . $request->path->extension();
+                    $courseResourceData['file_size'] = $request->path->getSize();
+                }
+            } else {
+                $path = $request->all()['path'];
             }
+
+            unset($request->all()['resource_type']);
+
             $courseResourceData['created_by'] = $this->user->id;
             $courseResourceData['path'] = $path;
             $resource = CourseResource::query()->create($courseResourceData);

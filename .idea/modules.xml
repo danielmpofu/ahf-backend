@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../../../../xampp/htdocs/alpasa-solutions/.idea/alpasa-solutions.iml" filepath="$PROJECT_DIR$/../../../../../xampp/htdocs/alpasa-solutions/.idea/alpasa-solutions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../../xampp/htdocs/envoq/.idea/envoq.iml" filepath="$PROJECT_DIR$/../../../../../xampp/htdocs/envoq/.idea/envoq.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../../../xampp/htdocs/hypobay/.idea/hypobay.iml" filepath="$PROJECT_DIR$/../../../../../xampp/htdocs/hypobay/.idea/hypobay.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/test-auth.iml" filepath="$PROJECT_DIR$/.idea/test-auth.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../../../xampp/htdocs/zim-foods-api/.idea/zim-foods-api.iml" filepath="$PROJECT_DIR$/../../../../../xampp/htdocs/zim-foods-api/.idea/zim-foods-api.iml" />

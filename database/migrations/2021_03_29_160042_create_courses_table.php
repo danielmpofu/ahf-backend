@@ -14,21 +14,32 @@ class CreateCoursesTable extends Migration
             $table->text('title');
             $table->text('description');
             $table->text('entry_requirements');
-            $table->text('optional')->default('optional');
+
+            $table->string('optional')
+                ->default('optional');
 
             $table->string('duration');
-            $table->text('duration_units')->default('weeks');
+            $table->string('duration_units')
+                ->default('weeks');
 
-            $table->text('lectures')->default('1');
-            $table->text('quizzes')->default('1');
-            $table->text('pass')->default('50');
+            $table->string('lectures')
+                ->default('1');
+
+            $table->string('quizzes')
+                ->default('1');
+
+            $table->string('pass')
+                ->default('50');
 
 
             $table->text('cover_image');
-            $table->integer('level')->unsigned()->index();
+
+            $table->integer('level')
+                ->unsigned()
+                ->index();
+
             $table->unsignedBigInteger('instructor_id');
             $table->timestamps();
-
 
             $table->foreign('instructor_id')
                 ->references('id')
@@ -42,10 +53,6 @@ class CreateCoursesTable extends Migration
 
             $table->softDeletes();
 
-//            $table->foreign('lid')
-//                ->references('id')
-//                ->on('levels')
-//                ->onDelete('cascade');
         });
     }
 

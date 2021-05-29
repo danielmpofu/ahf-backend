@@ -9,18 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CourseResourceFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = CourseResource::class;
-
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
@@ -29,6 +18,7 @@ class CourseResourceFactory extends Factory
             'description' => $this->faker->sentences(5, true),
             'file_type' => 'Mp4 Video',
             'file_extension' => '.mp4',
+            'points' => 10,
             'created_by'=>User::all()->random()->id,
             'path' => 'video_tutorial_' . $this->faker->numberBetween(1, 40) . '.mp4',
             'file_size' => $this->faker->numberBetween(10000, 25000),

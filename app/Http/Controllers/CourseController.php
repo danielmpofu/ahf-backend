@@ -31,6 +31,7 @@ class CourseController extends Controller
 
     public function index()
     {
+        //return $this->successResponse('lol');
         $courses = Course::all();
         $outputData = array();
         foreach ($courses as $course) {
@@ -71,7 +72,6 @@ class CourseController extends Controller
             $faq->question = $request->all()['question'];
             $faq->answer = $request->all()['answer'];
             $faq->created_by = $this->user->id;
-
             $faq->save();
             return $this->entityCreated($faq);
 
@@ -99,9 +99,17 @@ class CourseController extends Controller
         $enrolments = $this->user->enrollments;//->courses();
         $courses = array();
         foreach ($enrolments as $enrolment) {
-            $course = Course::query()->findOrFail($enrolment->course_id);
-            array_push($courses, $course);
+            $course = Course::query()->where('id', $enrolment->course_id)->first();
+            if($course){
+                array_push($courses, $course);
+            }
         }
+        return $this->successResponse($courses);
+    }
+
+    public function myCreatedCourses()
+    {
+        $courses = Course::query()->where('instructor_id',$this->user->id)->get();
         return $this->successResponse($courses);
     }
 

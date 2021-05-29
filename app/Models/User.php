@@ -11,10 +11,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
-
     use SoftDeletes;
 
-    //<--- use the softdelete traits
+    public static $active_user = 'active';
+    public static $inactive_user = 'inactive';
 
     protected $dates = ['deleted_at'];
 

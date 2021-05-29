@@ -124,5 +124,6 @@
     <orderEntry type="module" module-name="zim-foods-api" />
     <orderEntry type="module" module-name="hypobay" />
     <orderEntry type="module" module-name="alpasa-solutions" />
+    <orderEntry type="module" module-name="envoq" />
   </component>
 </module>

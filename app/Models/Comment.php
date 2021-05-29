@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
-
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['message', 'user_id', 'entity_id','entity_type'];

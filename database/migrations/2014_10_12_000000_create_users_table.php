@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->text('address')->nullable();
             $table->text('bio')->nullable();
             $table->text('dob')->nullable();
+            $table->text('pic_url')->nullable();
             $table->string('country')->nullable();
             $table->string('verified')->nullable();
             $table->string('gender')->nullable();
