@@ -18,12 +18,27 @@ class CreateCourseResourcesTable extends Migration
 
             $table->string('title');
 
+            $table->string('visibility')
+                ->default('1')
+                ->nullable(false);
+
+            $table->string('preview_time')
+                ->nullable(false)
+                ->default('2');
+
+            $table->string('order_position')
+                ->nullable(false)
+                ->default('0');
+
             $table->text('description');
             $table->text('path')->nullable(true);;
             $table->text('file_type')->nullable(true);;
             $table->text('file_extension')->nullable(true);;
             $table->text('file_size')->nullable(true);
             $table->text('study_length')->nullable(true);
+
+
+
 
             $table->softDeletes();
 

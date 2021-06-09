@@ -14,6 +14,8 @@ class CreateCoursesTable extends Migration
             $table->text('title');
             $table->text('description');
             $table->text('entry_requirements');
+            $table->text('cover_image');
+            $table->text('content');
 
             $table->string('optional')
                 ->default('optional');
@@ -31,8 +33,6 @@ class CreateCoursesTable extends Migration
             $table->string('pass')
                 ->default('50');
 
-
-            $table->text('cover_image');
 
             $table->integer('level')
                 ->unsigned()

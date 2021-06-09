@@ -32,6 +32,7 @@ class Course extends Model
         'entry_requirements',
         'optional',
         'level',
+        'content',
         'cover_image'
     ];
 

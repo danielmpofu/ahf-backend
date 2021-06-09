@@ -105,6 +105,7 @@ class CourseResourceController extends Controller
         }
     }
 
+
     public function show(CourseResource $resource)
     {
         $views = $resource->resourceViews();
@@ -118,10 +119,21 @@ class CourseResourceController extends Controller
         //
     }
 
-    public function update(Request $request, CourseResource $courseResource)
+    public function update(Request $request, $courseource)
     {
-        //
+        $res = CourseResource::query()->where('id', $courseource)->first();
+        if ($res) {
+
+            CourseResource::query()
+                ->where('id', $res->id)
+                ->update($request->all());
+
+            return $this->successResponse($res->toArray());
+        } else {
+            return $this->notFound();
+        }
     }
+
 
     public function destroy(CourseResource $id)
     {

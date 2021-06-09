@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseResource;
 use App\Models\Slideshow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +34,11 @@ class SlideshowController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),
-            ['course_id' => 'required', 'title' => 'required', 'description' => 'required', 'cover_pic' => 'required']);
-        if ($validator->fails()) {
+            ['course_id' => 'required',
+                'title' => 'required',
+                'description' => 'required',
+                'cover_pic' => 'required']);
+        if (!$validator->fails()) {
             $slideshow = new  Slideshow($validator->validated());
             $slideshow->created_by = $this->user->id;
             $slideshow->cover_pic = $request->cover_pic->store('public\course_resources');
@@ -51,9 +55,18 @@ class SlideshowController extends Controller
     }
 
 
-    public function update(Request $request, Slideshow $slideshow)
+    public function update(Request $request, $slideshow)
     {
-        //
+        $res = Slideshow::query()->where('id', $slideshow)->first();
+        if ($res) {
+            Slideshow::query()
+                ->where('id', $res->id)
+                ->update($request->all());
+
+            return $this->successResponse($res->toArray());
+        } else {
+            return $this->notFound();
+        }
     }
 
     public function destroy(Slideshow $slideshow)

@@ -24,10 +24,11 @@ class SlideController extends Controller
         $this->user = $this->guard()->user();
     }
 
-    public function index($slideshow_id)
+    public function index($slideshow_id,$course_id)
     {
         return $this->successResponse(Slide::query()
-            ->where('slideshow_id', $slideshow_id)
+            ->where('section_id', $slideshow_id)
+            ->where('course_id', $course_id)
             ->get());
     }
 
@@ -35,20 +36,35 @@ class SlideController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
-                'image_url' => 'required',
-                'audio_url' => 'required',
-                'position' => 'required',
+//                'image_url' => 'required',
+//                'audio_url' => 'required',
+//                'position' => 'required',
                 'slideshow_id' => 'required',
                 'section_id' => 'required',
                 'course_id' => 'required',
                 'title' => 'required',
-                'description' => 'required',
+//                'description' => 'required',
             ]);
 
-        if ($validator->fails()) {
+        if (!$validator->fails()) {
             $slideshow = new  Slide($validator->validated());
             $slideshow->created_by = $this->user->id;
-            $slideshow->cover_pic = $request->cover_pic->store('public\course_resources');
+
+            if($request->audio_url){
+                $slideshow->audio_url = $request->audio_url->store('public\course_resources\slides\audio');
+            }else{
+                $slideshow->audio_url = ' ';
+            }
+            if(!$request->description){
+                $slideshow->description = ' ' ;
+            }else{
+                $slideshow->description = $request->description;
+            }
+
+            if(!$request->position){
+                $slideshow->position = 0;
+            }
+            $slideshow->image_url = $request->image_url->store('public\course_resources\slides\images');
             $slideshow->save();
             return $this->entityCreated($slideshow);
         } else {

@@ -20,6 +20,20 @@ class CreateSlideshowsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->text('cover_pic');
+
+
+            $table->string('visibility')
+                ->default('1')
+                ->nullable(false);
+
+            $table->string('preview_time')
+                ->nullable(false)
+                ->default('2');
+
+            $table->string('order_position')
+                ->nullable(false)
+                ->default('0');
+
             $table->softDeletes();
             $table->timestamps();
 

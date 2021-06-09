@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Section;
+use App\Models\SlideshowSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +27,7 @@ class SectionController extends Controller
 
     public function index($slideshow_id)
     {
-        return $this->successResponse(Section::query()
+        return $this->successResponse(SlideshowSection::query()
             ->where('slideshow_id', $slideshow_id)
             ->get());
     }
@@ -39,12 +39,14 @@ class SectionController extends Controller
                 'course_id' => 'required',
                 'title' => 'required',
                 'description' => 'required',
-                'number' => 'required']);
+                // 'number' => 'required'
+            ]);
 
-        if ($validator->fails()) {
-            $slideshow = new  Section($validator->validated());
+        if (!$validator->fails()) {
+            $slideshow = new  SlideshowSection($validator->validated());
             $slideshow->created_by = $this->user->id;
-            $slideshow->cover_pic = $request->cover_pic->store('public\course_resources');
+            $slideshow->number = 0;
+
             $slideshow->save();
             return $this->entityCreated($slideshow);
         } else {
@@ -52,17 +54,27 @@ class SectionController extends Controller
         }
     }
 
-    public function show(Section $section)
+    public function show(SlideshowSection $section)
     {
         return $this->successResponse($section);
     }
 
-    public function update(Request $request, Section $slideshow)
+    public function update(Request $request, $section)
     {
-        //
+        $res = SlideshowSection::query()->where('id', $section)->first();
+        if ($res) {
+
+            SlideshowSection::query()
+                ->where('id', $res->id)
+                ->update($request->all());
+
+            return $this->successResponse($res->toArray());
+        } else {
+            return $this->notFound();
+        }
     }
 
-    public function destroy(Section $section)
+    public function destroy(SlideshowSection $section)
     {
         $section->delete();
         return $this->successResponse($section);

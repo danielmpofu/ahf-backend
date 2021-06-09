@@ -19,7 +19,10 @@ class CourseResource extends Model
         'points',
         'created_by',
         'path',
-        'file_type', 'file_extension', 'file_size', 'course_id'];
+        'file_type',
+        'file_extension',
+        'file_size',
+        'course_id'];
 
     public function resourceViews(){
         return $this->hasMany(ResourceViews::class,'resource_id','id');

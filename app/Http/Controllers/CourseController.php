@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\Course;
+use App\Models\CourseResource;
 use App\Models\Enrollment;
+use App\Models\Exercise;
 use App\Models\Faq;
 use App\Models\Level;
+use App\Models\Slideshow;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +22,6 @@ class CourseController extends Controller
     protected function guard()
     {
         return Auth::guard();
-
     }
 
     public function __construct()
@@ -100,7 +101,7 @@ class CourseController extends Controller
         $courses = array();
         foreach ($enrolments as $enrolment) {
             $course = Course::query()->where('id', $enrolment->course_id)->first();
-            if($course){
+            if ($course) {
                 array_push($courses, $course);
             }
         }
@@ -109,7 +110,7 @@ class CourseController extends Controller
 
     public function myCreatedCourses()
     {
-        $courses = Course::query()->where('instructor_id',$this->user->id)->get();
+        $courses = Course::query()->where('instructor_id', $this->user->id)->get();
         return $this->successResponse($courses);
     }
 
@@ -123,7 +124,7 @@ class CourseController extends Controller
 
         if (count($en) != 0) {
             $en[0]->delete();
-            return $this->successResponse(['message'=>'Un enrolled',$en]);
+            return $this->successResponse(['message' => 'Un enrolled', $en]);
         } else {
             $enr = new Enrollment();
             $enr->user_id = $this->user->id;
@@ -142,6 +143,7 @@ class CourseController extends Controller
             'description' => 'required|string',
             'level' => 'required|string',
             'duration' => 'required',
+            'content' => 'required',
             'entry_requirements' => 'required|string',
             'optional' => 'required|string',
         ]);
@@ -228,15 +230,14 @@ class CourseController extends Controller
         return $this->successResponse($comments);
     }
 
-
     public function update(Request $request, $id)
     {
         $course = Course::query()->findOrFail($id);
-
         $course->title = $request->title;
         $course->description = $request->description;
         $course->entry_requirements = $request->entry_requirements;
         $course->optional = $request->optional;
+        $course->content = $request->contents;
 
         if (isset($request->cover_image)) {
             //todo comeback here and add some code to remove the old file
@@ -245,6 +246,27 @@ class CourseController extends Controller
 
         $this->user->courses()->save($course);
         return $this->successResponse($course);
+    }
+
+
+    public function getCurriculum($course_id)
+    {
+        $resorces = CourseResource::query()
+            ->where('course_id', $course_id)
+            ->get();
+
+        $slides = Slideshow::query()
+            ->where('course_id', $course_id)
+            ->get();
+
+        $exs = Exercise::query()
+            ->where('course_id', $course_id)
+            ->get();
+
+        return $this->successResponse(
+            ['resources' => $resorces, 'slides' => $slides, 'exercises' => $exs,]
+        );
+
     }
 
     public function destroy($id)

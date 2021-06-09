@@ -47,6 +47,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'exercises'],
         Route::post('save-answer', [ExerciseController::class, 'addAnswer']);
         Route::post('get-answer-sheets', [ExerciseController::class, 'getAnswerSheets']);
         Route::get('get-one/{exercise}', [ExerciseController::class, 'show']);
+        Route::post('update/{exercise}', [ExerciseController::class, 'update']);
+        Route::post('update-mcq/{mcq}', [ExerciseController::class, 'updateMcq']);
         Route::get('delete/{exercise}', [ExerciseController::class, 'destroy']);
         Route::get('find-by-course/{course}', [ExerciseController::class, 'findByCourse']);
         Route::get('/', [ExerciseController::class, 'index']);
@@ -74,6 +76,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'courses'],
         Route::get('my-creations', [CourseController::class, 'myCreatedCourses']);
         Route::get('enroll/{course}', [CourseController::class, 'enrollCourse']);
         Route::get('find/{id}', [CourseController::class, 'show']);
+        Route::get('curriculum/{course_id}', [CourseController::class, 'getCurriculum']);
         Route::get('delete/{id}', [CourseController::class, 'destroy']);
         Route::post('update/{id}', [CourseController::class, 'update']);
         Route::post('faqs/{id}', [CourseController::class, 'add_faq']);
@@ -86,7 +89,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'resources'],
     function () {
         Route::post('/', [CourseResourceController::class, 'store']);
         Route::get('/{course}', [CourseResourceController::class, 'index']);
+        Route::delete('delete/{id}', [CourseResourceController::class, 'destroy']);
         Route::get('find/{resource}', [CourseResourceController::class, 'show']);
+        Route::post('update/{resource}', [CourseResourceController::class, 'update']);
         Route::post('view', [CourseResourceController::class, 'addResourceView']);
     });
 
@@ -103,6 +108,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'comments'],
         Route::get('find/{entity_id}/{entity_type}', [CommentController::class, 'index']);
         Route::post('comment/', [CommentController::class, 'store']);
     });
+
 Route::group(['middleware' => 'api', 'prefix' => 'faqs'],
     function () {
         Route::get('find/{faq}', [FaqController::class, 'show']);
@@ -125,7 +131,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'resources'],
     function () {
         Route::post('/', [CourseResourceController::class, 'store']);
         Route::get('course/{course}', [CreateCourseResourcesTable::class, 'index']);
-        Route::post('update/{id}', [CourseResourceController::class, 'update']);
+        Route::post('update/{courseource}', [CourseResourceController::class, 'update']);
         Route::get('user/{user}', [CourseResourceController::class, 'show']);
         Route::get('delete/{id}', [CourseResourceController::class, 'destroy']);
     });
@@ -135,6 +141,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'slideshows'],
         Route::post('/', [SlideshowController::class, 'store']);
         Route::get('list/{course_id}', [SlideshowController::class, 'index']);
         Route::get('find/{id}', [SlideshowController::class, 'show']);
+        Route::post('update/{slideshow}', [SlideshowController::class, 'update']);
         Route::get('delete/{slideshow}', [SlideshowController::class, 'destroy']);
     });
 
@@ -143,14 +150,14 @@ Route::group(['middleware' => 'api', 'prefix' => 'slideshow_sections'],
         Route::post('/', [SectionController::class, 'store']);
         Route::get('list/{slideshow_id}', [SectionController::class, 'index']);
         Route::get('find/{section}', [SectionController::class, 'show']);
+        Route::post('update/{section}', [SectionController::class, 'update']);
         Route::get('delete/{section}', [SectionController::class, 'destroy']);
     });
 
 Route::group(['middleware' => 'api', 'prefix' => 'slides'],
     function () {
         Route::post('/', [SlideController::class, 'store']);
-        Route::get('list/{section_id}', [SlideController::class, 'index']);
+        Route::get('list/{section_id}/{course_id}', [SlideController::class, 'index']);
         Route::get('find/{id}', [SlideController::class, 'show']);
         Route::get('delete/{slideshow}', [SlideController::class, 'destroy']);
     });
-
