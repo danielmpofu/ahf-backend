@@ -23,6 +23,9 @@ class CourseFactory extends Factory
             'duration' => $this->faker->numberBetween(1, 25) . ' ' . $this->faker->randomElement(['Days', 'Months', 'Weeks', 'Hours']),
             'level' => Level::all()->random()->id,
 
+            //content solution
+            'content' => $this->faker->sentences(10, true),
+
             'instructor_id' => User::all()->random()->id,
         ];
     }

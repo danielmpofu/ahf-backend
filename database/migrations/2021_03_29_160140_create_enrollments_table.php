@@ -12,7 +12,7 @@ class CreateEnrollmentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('course_id');
-            $table->text('approved')->default('auto');
+            $table->string('approved')->default('auto');
             $table->softDeletes();
             $table->timestamps();
 
