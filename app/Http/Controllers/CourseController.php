@@ -201,8 +201,6 @@ class CourseController extends Controller
             $c['enrolled'] = false;
         }
 
-//        $c['enrolled'] = $en;
-
         $courseData = array(
             "course" => $c,
             "instructor" => $instructor,
