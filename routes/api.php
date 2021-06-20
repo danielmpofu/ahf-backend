@@ -126,7 +126,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'levels'],
         Route::post('update/{id}', [LevelController::class, 'update']);
     });
 
-
 Route::group(['middleware' => 'api', 'prefix' => 'resources'],
     function () {
         Route::post('/', [CourseResourceController::class, 'store']);
