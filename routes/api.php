@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 
-
 Route::group(['middleware' => 'api', 'prefix' => 'users'], function () {
     Route::get('/disable/{user}', [UsersController::class, 'disable']);
     Route::post('/invite/', [UsersController::class, 'invite']);
@@ -27,7 +26,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'users'], function () {
     Route::delete('/{user}', [UsersController::class, 'destroy']);
 });
 
-Route::post('/run-command}', function (Request $request) {
+Route::post('/run-command', function (Request $request) {
     $val = Validator::make($request->all(), ['command' => 'required']);
     if ($val->fails()) {
         return response()->json($val->errors(), 400);

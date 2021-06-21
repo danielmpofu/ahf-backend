@@ -21,6 +21,7 @@ class CreateCoursesTable extends Migration
                 ->default('optional');
 
             $table->string('duration');
+
             $table->string('duration_units')
                 ->default('weeks');
 
