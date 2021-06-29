@@ -14,7 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class CourseController extends Controller
+class
+CourseController extends Controller
 {
 
     protected $user;
